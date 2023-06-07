@@ -54,6 +54,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'project.urls'
+IMAGEIO = {
+    'ffmpeg_path': os.path.join("C:/Program Files/ImageMagick-7.1.1-Q16-HDRI", 'ffmpeg.exe'),
+    'imagemagick_path': os.path.join('C:/Program Files/ImageMagick-7.1.1-Q16-HDRI' 'convert.exe'),
+}
 
 TEMPLATES = [
     {

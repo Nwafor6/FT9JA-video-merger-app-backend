@@ -14,6 +14,12 @@
         display: inline;
         width: 100%;
     }
+    .footer{
+        padding: 14px;
+    }
+    /* .about-us p{
+        width: 70%;
+    } */
 
 }
 @media(max-width:500px){

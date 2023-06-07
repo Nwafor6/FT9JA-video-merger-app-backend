@@ -188,7 +188,7 @@ width: 50%;
     margin-top: 30px;
     font-size:13px;
     list-style: none;
-    text-align: justify;
+    /* text-align: justify; */
     
 }
 .footer .title{
@@ -209,5 +209,8 @@ width: 50%;
 }
 .footer-help{
     padding-left: 10px;
+}
+.about-text{
+    margin-right: 10px;
 }
 
