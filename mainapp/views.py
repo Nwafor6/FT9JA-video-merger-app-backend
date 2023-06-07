@@ -24,14 +24,14 @@ def merge_videos(video1_path, video2_path, text, description, uploaded_movie, vi
     
     # Composite the video and text clip
     composite_clip = CompositeVideoClip([video1, text_clip])
-    output_path1 = f"media/ft9ja/{video_name}"
+    output_path1 = f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/ft9ja/{video_name}"
     composite_clip.write_videofile(output_path1, codec="libx264", audio_codec="aac", threads=8, fps=24)
     
     # Merge output1 and video2
     video3 = VideoFileClip(output_path1)
     merged_video = concatenate_videoclips([video3, video2])
     
-    output_path = f"media/Merged_uploaded/{video_name}"
+    output_path = f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{video_name}"
     merged_video.write_videofile(output_path, codec="libx264", audio_codec="aac", threads=8, fps=24)
     
     merged_video=MergedMovie.objects.create(
@@ -60,5 +60,5 @@ def video_merger(request):
         merge_thread.join()
         print(video_name)
         merged_video=MergedMovie.objects.get(video=f'Merged_uploaded/{video_name}')
-        return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"http://127.0.0.1:8000/media/Merged_uploaded/{str(video_name)}"})
+        return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{str(video_name)}"})
     return render(request, "index.html")
