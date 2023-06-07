@@ -51,7 +51,7 @@ def video_merger(request):
         )
         
         video1_path = uploaded_movie.video.path
-        video2_path = "media/ft9ja/ft9ja.mp4"
+        video2_path = "/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/ft9ja/ft9ja.mp4"
         
         text = description
         # Create a thread for merging the videos
