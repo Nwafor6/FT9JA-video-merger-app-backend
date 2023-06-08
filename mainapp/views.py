@@ -24,6 +24,7 @@ def merge_videos(video1_path, video2_path, text, description, uploaded_movie, vi
     
     # Composite the video and text clip
     composite_clip = CompositeVideoClip([video1, text_clip])
+    # output_path1 = f"media/ft9ja/{video_name}"
     output_path1 = f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/ft9ja/{video_name}"
     composite_clip.write_videofile(output_path1, codec="libx264", audio_codec="aac", threads=8, fps=24)
     
@@ -31,6 +32,7 @@ def merge_videos(video1_path, video2_path, text, description, uploaded_movie, vi
     video3 = VideoFileClip(output_path1)
     merged_video = concatenate_videoclips([video3, video2])
     
+    # output_path = f"media/Merged_uploaded/{video_name}"
     output_path = f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{video_name}"
     merged_video.write_videofile(output_path, codec="libx264", audio_codec="aac", threads=8, fps=24)
     
@@ -51,8 +53,8 @@ def video_merger(request):
         )
         
         video1_path = uploaded_movie.video.path
+        # video2_path = "media/ft9ja/ft9ja.mp4"
         video2_path = "/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/ft9ja/ft9ja.mp4"
-        
         text = description
         # Create a thread for merging the videos
         merge_thread = threading.Thread(target=merge_videos, args=(video1_path, video2_path, text, description, uploaded_movie, video_name))
@@ -60,5 +62,6 @@ def video_merger(request):
         merge_thread.join()
         print(video_name)
         merged_video=MergedMovie.objects.get(video=f'Merged_uploaded/{video_name}')
+        # return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"media/Merged_uploaded/{str(video_name)}"})
         return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{str(video_name)}"})
     return render(request, "index.html")
