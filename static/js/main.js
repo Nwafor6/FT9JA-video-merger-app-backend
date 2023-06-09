@@ -1,9 +1,8 @@
 $(document).ready(function(){
-    $("#upload-btn").click(()=>{
-        console.log("Hello clicked")
-        $("#upload-field").click()
-    })
-
+    document.getElementById('root-div').addEventListener('click', function() {
+        document.getElementById('upload-field').click();
+    });
+    
     // Get the name of the uploaded file
     $("#upload-field").on('change',function(event){
         let filename=$("#upload-field").val().split('\\');
@@ -43,7 +42,7 @@ $(document).ready(function(){
             url:"",
             data:formData,
             headers: {
-                'X-CSRFToken': csrftoken  // Include the CSRF token in the request headers
+                'X-CSRFToken': csrftoken
               },
             processData: false,
             contentType: false,
@@ -69,9 +68,21 @@ $(document).ready(function(){
                 })
                 // Add share functionality
                 $("#share_btn").click(()=>{
-                    navigator.clipboard.writeText(`${resp.file_loc}`)
+                    $("#shorten_link").html(`
+                    
+                    <div class="mb-3 p-3 bg-dark text-white"><small>Visit: <a href="http://127.0.0.1:8000/ft9ja/${resp.short_url}" class="text-white">http://127.0.0.1:8000/ft9ja/${resp.short_url}</a></small></div>
+                    `)
+                    navigator.clipboard.writeText(`http://127.0.0.1:8000/ft9ja/${resp.short_url}`)
                     window.alert("Link copied !")
                 })
+                // Add the video for streamng
+                $(".rectangle-bg").html(`
+                    <div id="video-container">
+                        <video controls autoplay>
+                            <source src="${resp.file_loc}" type="video/mp4">
+                        </video>
+                    </div>
+                `)
             },
             error:function(err){
                 console.log(err)

@@ -1,10 +1,13 @@
 import threading
 import random
 import string
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .models import MergedMovie, UploadedMovie
+from .models import MergedMovie, UploadedMovie, ShortLink
 from moviepy.editor import VideoFileClip, concatenate_videoclips, TextClip, CompositeVideoClip
+from .shortner import generate_short_url
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 
 video_name=""
 def merge_videos(video1_path, video2_path, text, description, uploaded_movie, video_name):
@@ -62,6 +65,14 @@ def video_merger(request):
         merge_thread.join()
         print(video_name)
         merged_video=MergedMovie.objects.get(video=f'Merged_uploaded/{video_name}')
-        # return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"media/Merged_uploaded/{str(video_name)}"})
-        return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{str(video_name)}"})
+        # return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"media/Merged_uploaded/{str(video_name)}", "short_url":generate_short_url(f"http://127.0.0.1:8000/media/Merged_uploaded/{str(video_name)}")})
+        return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{str(video_name)}", "short_url":generate_short_url(f"http://ft9javideomergeapp.pythonanywhere.com/media/Merged_uploaded/{str(video_name)}")})
     return render(request, "index.html")
+
+
+def decode_short_link(request, link):
+    full_link = get_object_or_404(ShortLink, short_url=link)
+    return HttpResponse(status=302, headers={'Location': full_link.original_url})
+
+
+
