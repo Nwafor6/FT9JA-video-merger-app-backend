@@ -70,9 +70,9 @@ $(document).ready(function(){
                 $("#share_btn").click(()=>{
                     $("#shorten_link").html(`
                     
-                    <div class="mb-3 p-3 bg-dark text-white"><small>Visit: <a href="http://127.0.0.1:8000/ft9ja/${resp.short_url}" class="text-white">http://127.0.0.1:8000/ft9ja/${resp.short_url}</a></small></div>
+                    <div class="mb-3 p-3 bg-dark text-white"><small>Visit: <a href=""http://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}" class="text-white">"http://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}</a></small></div>
                     `)
-                    navigator.clipboard.writeText(`http://127.0.0.1:8000/ft9ja/${resp.short_url}`)
+                    navigator.clipboard.writeText(`"http://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}`)
                     window.alert("Link copied !")
                 })
                 // Add the video for streamng
