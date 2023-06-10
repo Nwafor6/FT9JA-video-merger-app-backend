@@ -7,7 +7,7 @@ $(document).ready(function(){
     $("#upload-field").on('change',function(event){
         let filename=$("#upload-field").val().split('\\');
         // Set a standard size
-        maxSizeInBytes = 10 * 1024 * 1024;
+        maxSizeInBytes = 4 * 1024 * 1024;
         // Get the size of the file the user is uploading
         file_detail=event.target.files[0]
         console.log(file_detail.size,"size of")
@@ -15,7 +15,7 @@ $(document).ready(function(){
             $("#file_name").text(filename[2])
             $(".merger-btn-holder").html(`<button >Merge</button>`)
         }else{
-            $("#file_name").text('File too large !')
+            $("#file_name").text('File too large ! (max: 4mb)')
             $(".merger-btn-holder").html(`<button disabled>Merge</button>`)
             };
         
@@ -70,17 +70,27 @@ $(document).ready(function(){
                 $("#share_btn").click(()=>{
                     $("#shorten_link").html(`
                     
-                    <div class="mb-3 p-3 bg-dark text-white"><small>Visit: <a href=""http://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}" class="text-white">"http://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}</a></small></div>
+                    <div class="mb-3 p-3 bg-dark text-white"><small>Visit: <a href="https://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}" class="text-white">https://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}</a></small></div>
                     `)
-                    navigator.clipboard.writeText(`"http://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}`)
+                    navigator.clipboard.writeText(`https://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}`)
                     window.alert("Link copied !")
                 })
                 // Add the video for streamng
                 $(".rectangle-bg").html(`
                     <div id="video-container">
-                        <video controls autoplay>
-                            <source src="${resp.file_loc}" type="video/mp4">
-                        </video>
+                    <video controls autoplay>
+                    <source src="${resp.file_loc}" type="video/mp4">
+                    <source src="${resp.file_loc}" type="video/webm">
+                    <source src="${resp.file_loc}" type="video/ogg">
+                    <source src="${resp.file_loc}" type="video/mov">
+                    <source src="${resp.file_loc}" type="video/avi">
+                    <source src="${resp.file_loc}" type="video/wmv">
+                    <source src="${resp.file_loc}" type="video/flv">
+                    <source src="${resp.file_loc}" type="video/mkv">
+                    <source src="${resp.file_loc}" type="video/mpeg">
+                    <!-- Add more source tags for other video formats if needed -->
+                    </video>
+                
                     </div>
                 `)
             },
@@ -88,7 +98,7 @@ $(document).ready(function(){
                 console.log(err)
                 $(".message").html(
                     `<div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                    <small>${err}</small>
+                    <small>An error occured !</small>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>`
                 )
