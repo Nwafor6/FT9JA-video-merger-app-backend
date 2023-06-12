@@ -11,14 +11,26 @@ from django.http import HttpResponse
 
 
 video_name=""
-def merge_videos(video1_path, video2_path, text, description, uploaded_movie, video_name):
-    video1 = VideoFileClip(video1_path).resize(0.3)
+def merge_videos(video1_path, video2_path, text, description, uploaded_movie, video_name, file_size):
+    # Evaluate the upload file_size to determine appropriate compression
+    video1 = VideoFileClip(video1_path)
+    print(video1.w,"x",video1.h, "this is the width")
+
+    if file_size <= 5 and video1.w <= 1080:
+        print("Hello < 5")
+        video1=video1.resize(0.6)
+    elif file_size <= 15 and video1.w <= 1080:
+        print("Hello < 15")
+        video1=video1.resize(0.3)
+    else:
+        video1=video1.resize(0.2)
+        print(video1.w,"x",video1.h, "this is the width2")
+
     video2 = VideoFileClip(video2_path).resize(video1.size)
     
     text_clip = TextClip(text, fontsize=20, color="white", font="Arial", bg_color="#359602")
     text_clip = text_clip.set_duration(video1.duration)  # Set text duration to match video1
 
-    
     # Calculate position based on screen size
     screen_width, screen_height = video1.size
     text_width, text_height = text_clip.size
@@ -29,19 +41,18 @@ def merge_videos(video1_path, video2_path, text, description, uploaded_movie, vi
     # Composite the video and text clip
     composite_clip = CompositeVideoClip([video1, text_clip])
     # Apply optimizations
-    # composite_clip = composite_clip.resize(width=1920)  # Resize to a specific width
     composite_clip = composite_clip.set_fps(30)  # Adjust the frames per second
 
-    # output_path1 = f"media/ft9ja/{video_name}"
-    output_path1 = f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/ft9ja/{video_name}"
+    output_path1 = f"media/ft9ja/{video_name}"
+    # output_path1 = f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/ft9ja/{video_name}"
     composite_clip.write_videofile(output_path1, codec="libx264", audio_codec="aac", threads=32, fps=39)
     
     # Merge output1 and video2
     video3 = VideoFileClip(output_path1)
     merged_video = concatenate_videoclips([video3, video2], method='chain')
     
-    # output_path = f"media/Merged_uploaded/{video_name}"
-    output_path = f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{video_name}"
+    output_path = f"media/Merged_uploaded/{video_name}"
+    # output_path = f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{video_name}"
     merged_video.write_videofile(output_path, codec="libx264", audio_codec="aac", threads=32, fps=39)
     
     merged_video=MergedMovie.objects.create(
@@ -52,6 +63,7 @@ def merge_videos(video1_path, video2_path, text, description, uploaded_movie, vi
 
 def video_merger(request):
     if request.method == "POST":
+        file_size=float(request.POST["file_size"])
         description = request.POST["description"]
         video = request.FILES["video"]
         video_name=f"{''.join(random.choices(string.ascii_letters + string.digits, k=6))}{video}"
@@ -61,17 +73,18 @@ def video_merger(request):
         )
         
         video1_path = uploaded_movie.video.path
-        # video2_path = "media/ft9ja/ft9ja.mp4"
-        video2_path = "/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/ft9ja/ft9ja.mp4"
+        video2_path = "media/ft9ja/ft9ja.mp4"
+        # video2_path = "/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/ft9ja/ft9ja.mp4"
         text = description
         # Create a thread for merging the videos
-        merge_thread = threading.Thread(target=merge_videos, args=(video1_path, video2_path, text, description, uploaded_movie, video_name))
+        merge_thread = threading.Thread(target=merge_videos, args=(video1_path, video2_path, text, description, uploaded_movie, video_name, file_size))
         merge_thread.start()
         merge_thread.join()
         print(video_name)
         merged_video=MergedMovie.objects.get(video=f'Merged_uploaded/{video_name}')
-        # return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"media/Merged_uploaded/{str(video_name)}", "short_url":generate_short_url(f"http://127.0.0.1:8000/media/Merged_uploaded/{str(video_name)}")})
-        return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{str(video_name)}", "short_url":generate_short_url(f"http://ft9javideomergeapp.pythonanywhere.com/media/Merged_uploaded/{str(video_name)}")})
+        return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"media/Merged_uploaded/{str(video_name)}", "short_url":generate_short_url(f"http://127.0.0.1:8000/media/Merged_uploaded/{str(video_name)}")})# Response for development
+        # return JsonResponse({"details":'Merging complete !. Now click download',"file_name":str(video), "file_loc":f"/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/Merged_uploaded/{str(video_name)}", "short_url":generate_short_url(f"http://ft9javideomergeapp.pythonanywhere.com/media/Merged_uploaded/{str(video_name)}")})# Response for production
+        # return JsonResponse("Hello", safe=False)
     return render(request, "index.html")
 
 

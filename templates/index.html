@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
     <!-- Jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script> -->
     <title>FT9JA</title>
   </head>
   <body>
@@ -55,9 +55,10 @@
                     </div>
                     <div class="description-form">
                         <input type="text" name="description" id="" class="video-description" maxlength="30" required>
+                        <input type="text" name="file_size" id="" class="file_size" maxlength="30" hidden>
                     </div>
                     <div class="upload-box-holder" id="root-div">
-                        <div class="upload-box">
+                        <div class="upload-box" id="upload_box">
                             <p class="mb-0"><i class="bi bi-cloud-arrow-up"></i></p>
                             <input type="file" id="upload-field" hidden name="video" required>
                             <span id="upload-btn">Click here to Upload</span><br>
@@ -142,7 +143,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <!-- <script src="{%static 'js/jquery.js'%}"></script> -->
+    <script src="{%static 'js/jquery.js'%}"></script>
     <script src="{%static 'js/main.js'%}"></script>
   </body>
 </html>
