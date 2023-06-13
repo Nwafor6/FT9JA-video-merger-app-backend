@@ -75,8 +75,8 @@ $(document).ready(function(){
                     
                     <div class="mb-3 p-3 bg-dark text-white"><small>Visit: <a href="https://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}" class="text-white">https://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}</a></small></div>
                     `)
-                    navigator.clipboard.writeText(`http://127.0.0.1:8000/ft9ja/${resp.short_url}`)
-                    // navigator.clipboard.writeText(`https://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}`)
+                    // navigator.clipboard.writeText(`http://127.0.0.1:8000/ft9ja/${resp.short_url}`)
+                    navigator.clipboard.writeText(`https://ft9javideomergeapp.pythonanywhere.com/ft9ja/${resp.short_url}`)
                     window.alert("Link copied !")
                 })
                 // Add the video for streamng

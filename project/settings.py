@@ -125,8 +125,8 @@ USE_TZ = True
 STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static'),]
 STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
 STATIC_URL='/static/'
-MEDIA_URL='/media/' #media for development
-# MEDIA_URL="/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/"
+# MEDIA_URL='/media/' #media for development
+MEDIA_URL="/home/ft9javideomergeapp/FT9JA-video-merger-app-backend/media/"
 MEDIA_ROOT= os.path.join( BASE_DIR/'media/')
 
 # Default primary key field type
